@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Memes GOD 😈🔥</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #000000, #1a1a2e);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 20px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0,255,255,0.4);
+}
+
+img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+button {
+  margin: 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.like { background: #00ff88; }
+.dislike { background: #ff4d4d; }
+.next { background: #00c9ff; }
+
+button:disabled {
+  background: gray;
+}
+
+.votos {
+  font-size: 22px;
+  margin: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2 id="titulo"></h2>
+  <img id="imagen">
+  <div class="votos" id="votos"></div>
+
+  <button class="like" onclick="votar(1)">👍</button>
+  <button class="dislike" onclick="votar(-1)">👎</button>
+  <br>
+  <button class="next" onclick="siguiente()">➡️ Siguiente</button>
+</div>
+
+<script>
+let memes = [
+  {titulo:"Cuando estudias 5 min 💀", url:"https://i.imgur.com/3GvwNBf.jpg", votos:0},
+  {titulo:"Yo diciendo que cambio 😈", url:"https://i.imgur.com/Qr71crq.jpg", votos:0},
+  {titulo:"El profe: fácil 😐", url:"https://i.imgur.com/8Km9tLL.jpg", votos:0},
+  {titulo:"Otra partida más 😭", url:"https://i.imgur.com/Z7AzH2c.jpg", votos:0},
+  {titulo:"Nevera otra vez 🥶", url:"https://i.imgur.com/vxZQ8lF.jpg", votos:0}
+];
+
+let index = 0;
+let votosUsuario = JSON.parse(localStorage.getItem("votosUsuario")) || {};
+
+function mostrar() {
+  document.getElementById("titulo").innerText = memes[index].titulo;
+  document.getElementById("imagen").src = memes[index].url;
+  document.getElementById("votos").innerText = "🔥 " + memes[index].votos;
+
+  let botones = document.querySelectorAll("button");
+  if (votosUsuario[index]) {
+    botones[0].disabled = true;
+    botones[1].disabled = true;
+  } else {
+    botones[0].disabled = false;
+    botones[1].disabled = false;
+  }
+}
+
+function votar(valor) {
+  if (votosUsuario[index]) return;
+
+  memes[index].votos += valor;
+  votosUsuario[index] = true;
+
+  localStorage.setItem("votosUsuario", JSON.stringify(votosUsuario));
+  mostrar();
+}
+
+function siguiente() {
+  index++;
+  if (index >= memes.length) index = 0;
+  mostrar();
+}
+
+mostrar();
+</script>
+
+</body>
+</html>
